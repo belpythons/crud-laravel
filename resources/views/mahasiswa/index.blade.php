@@ -1,104 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Mahasiswa</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .btn:hover {
+            transform: scale(1.03);
+        }
+        .search-input {
+            max-width: 300px;
+        }
+        .pagination .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
     <div class="container py-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h3 text-primary">📋 Daftar Mahasiswa</h1>
-                <div class="d-flex gap-2">
-                <a href="{{ route('mahasiswa.pdf') }}" class="btn btn-danger" target="_blank">
-                    <i class="bi bi-file-pdf"></i> Export PDF
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+            <h1 class="h3 text-primary mb-0">
+                <i class="bi bi-people-fill me-2"></i> Daftar Mahasiswa
+            </h1>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ route('mahasiswa.create') }}" class="btn btn-success shadow-sm">
+                    <i class="bi bi-plus-circle me-1"></i> Tambah Mahasiswa
                 </a>
-                <a href="{{ route('mahasiswa.export') }}" class="btn btn-primary">
-                    <i class="bi bi-file-earmark-spreadsheet"></i> Export Excel
+                <a href="{{ route('mahasiswa.exportExcel') }}" class="btn btn-primary shadow-sm">
+                    <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export Excel
                 </a>
-                <a href="{{ route('mahasiswa.create') }}" class="btn btn-success">
-                    + Tambah Mahasiswa
+                <a href="{{ route('mahasiswa.cetakPDF') }}" class="btn btn-danger shadow-sm">
+                    <i class="bi bi-file-earmark-pdf-fill me-1"></i> Cetak PDF
                 </a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button class="btn btn-outline-danger shadow-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
             </div>
         </div>
 
-        <div class="card shadow-sm">
+        <div class="card shadow-sm border-0 mb-3">
+            <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+                <form action="{{ route('mahasiswa.index') }}" method="GET" class="d-flex align-items-center w-100 justify-content-between">
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ $search }}"
+                        class="form-control search-input me-2"
+                        placeholder="Cari nama / NIM / email...">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-search"></i> Cari
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
             <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <form method="GET" class="d-flex align-items-center" id="searchForm">
-                            <input type="search" name="q" value="{{ isset($q) ? $q : '' }}" class="form-control form-control-sm me-2" placeholder="Cari nama, nim, email..." style="width: 240px;">
-                            @if(isset($perPage))
-                                <input type="hidden" name="perPage" value="{{ $perPage }}">
-                            @endif
-                            <button type="submit" class="btn btn-outline-primary btn-sm me-2">Search</button>
-                        </form>
-
-                        <form method="GET" class="d-flex align-items-center" id="jumpForm">
-                            <label for="jumpPage" class="me-2 mb-0">Go to page:</label>
-                            <input type="number" min="1" max="{{ $mahasiswa->lastPage() }}" name="page" id="jumpPage" class="form-control form-control-sm me-2" style="width: 90px;" placeholder="1">
-                            @if(isset($perPage))
-                                <input type="hidden" name="perPage" value="{{ $perPage }}">
-                            @endif
-                            <button type="submit" class="btn btn-primary btn-sm">Go</button>
-                        </form>
-
+                @if($mahasiswa->isEmpty())
+                    <p class="text-center text-muted my-4">Belum ada data mahasiswa.</p>
+                @else
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered align-middle text-center mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>NO</th>
+                                    <th>Nama</th>
+                                    <th>NIM</th>
+                                    <th>Email</th>
+                                    <th>Program Studi</th>
+                                    <th width="160">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($mahasiswa as $index => $m)
+                                <tr>
+                                    <td>{{ $mahasiswa->firstItem() + $index }}</td>
+                                    <td>{{ $m->nama }}</td>
+                                    <td>{{ $m->nim }}</td>
+                                    <td>{{ $m->email }}</td>
+                                    <td>{{ $m->prodi }}</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a href="{{ route('mahasiswa.edit', $m->id) }}" class="btn btn-warning btn-sm">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </a>
+                                            <form action="{{ route('mahasiswa.destroy', $m->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-trash"></i> Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-                <table class="table table-striped table-bordered align-middle">
-                    <thead class="table-dark text-center">
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>NIM</th>
-                            <th>Email</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($mahasiswa as $index => $m)
-                        <tr>
-                            <td class="text-center">{{ $mahasiswa->firstItem() + $index }}</td>
-                            <td>{{ $m->nama }}</td>
-                            <td>{{ $m->nim }}</td>
-                            <td>{{ $m->email }}</td>
-                            <td class="text-center">
-                                <div class="d-flex justify-content-center gap-2">
-                                    <a href="{{ route('mahasiswa.edit',$m->id) }}" class="btn btn-warning btn-sm">✏ Edit</a>
-                                    <form action="{{ route('mahasiswa.destroy',$m->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">🗑 Hapus</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                @if($mahasiswa->count() == 0)
-                    <p class="text-center text-muted">Belum ada data mahasiswa.</p>
+                    <div class="d-flex justify-content-center mt-4">
+                        {{ $mahasiswa->links('pagination::bootstrap-5') }}
+                    </div>
                 @endif
-
-                <div class="d-flex justify-content-center mt-3">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            <li class="page-item {{ $mahasiswa->onFirstPage() ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $mahasiswa->onFirstPage() ? '#' : $mahasiswa->previousPageUrl() }}" aria-label="Previous">Prev</a>
-                            </li>
-                            <li class="page-item disabled">
-                                <span class="page-link">Page {{ $mahasiswa->currentPage() }} of {{ $mahasiswa->lastPage() }}</span>
-                            </li>
-                            <li class="page-item {{ $mahasiswa->currentPage() == $mahasiswa->lastPage() ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $mahasiswa->currentPage() == $mahasiswa->lastPage() ? '#' : $mahasiswa->nextPageUrl() }}" aria-label="Next">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -28,10 +28,19 @@
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" name="email" id="email" class="form-control" placeholder="Masukkan email" required>
                             </div>
-                            <div class="d-flex justify-content-between">
+                            <label class="form-label">Program Studi</label>
+                            <select name="prodi" class="form-control" required>
+                                <option value="">-- Pilih Prodi --</option>
+                                @foreach ($prodiList as $p)
+                                    <option value="{{ $p }}">{{ $p }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                            <div class="d-flex justify-content-between mt-4" style="padding-left: 15px; padding-right: 15px;">
                                 <a href="{{ route('mahasiswa.index') }}" class="btn btn-secondary">⬅ Kembali</a>
                                 <button type="submit" class="btn btn-success">💾 Simpan</button>
                             </div>
+                            <div class="mb-3">
                         </form>
                     </div>
                 </div>

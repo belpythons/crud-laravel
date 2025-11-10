@@ -1,79 +1,228 @@
-# Proyek CRUD Mahasiswa (UTS PBF)
+# 🎓 CRUD Laravel - Sistem Manajemen Data Mahasiswa
 
-Proyek ini adalah aplikasi web sederhana yang dibangun menggunakan Laravel untuk mengelola data mahasiswa. Aplikasi ini menerapkan operasi dasar **CRUD (Create, Read, Update, Delete)**. Proyek ini dibuat untuk memenuhi tugas Ujian Tengah Semester (UTS) mata kuliah Pemrograman Berbasis Framework (PBF).
-
-**URL Website:** [https://dazzling-example-deg.sgp.dom.my.id/mahasiswa](https://dazzling-example-deg.sgp.dom.my.id/mahasiswa)
+Aplikasi web untuk mengelola data mahasiswa yang dibangun menggunakan **Laravel 12** dengan sistem autentikasi lengkap. Aplikasi ini menerapkan operasi **CRUD (Create, Read, Update, Delete)** dengan fitur tambahan seperti pencarian, export data, dan antarmuka yang responsif menggunakan Bootstrap.
 
 ## 📋 Fitur Utama
 
-Berdasarkan file `app/Http/Controllers/MahasiswaController.php` dan `routes/web.php`, aplikasi ini memiliki fitur-fitur berikut:
+### ✨ Manajemen Mahasiswa
+* **📝 Create:** Menambahkan data mahasiswa baru (Nama, NIM, Email, Program Studi)
+* **👁️ Read:** Menampilkan daftar mahasiswa dengan pagination dan pencarian
+* **✏️ Update:** Mengedit dan memperbarui data mahasiswa
+* **🗑️ Delete:** Menghapus data mahasiswa dengan konfirmasi
 
-* **Create:** Menambahkan data mahasiswa baru (termasuk Nama, NIM, Jurusan, dan Email).
-* **Read:** Menampilkan daftar semua data mahasiswa dalam bentuk tabel.
-* **Update:** Mengedit dan memperbarui data mahasiswa yang sudah ada.
-* **Delete:** Menghapus data mahasiswa dari database.
-* **Export PDF:** Mengunduh data tabel mahasiswa dalam format PDF.
-* **Seeder:** Menyertakan data *dummy* untuk tabel mahasiswa menggunakan `MahasiswaSeeder.php`.
+### 🔐 Sistem Autentikasi
+* **🔑 Login/Register:** Sistem autentikasi menggunakan Laravel Breeze
+* **🛡️ Protected Routes:** Semua fitur mahasiswa dilindungi autentikasi
+* **👤 User Management:** Profil pengguna yang dapat diedit
 
-## ⚙️ Teknologi yang Digunakan
+### 📊 Export & Reporting
+* **📄 Export PDF:** Mengunduh data mahasiswa dalam format PDF
+* **📈 Export CSV:** Mengunduh data mahasiswa dalam format CSV/Excel
+* **🔍 Search:** Pencarian berdasarkan nama, NIM, email, atau program studi
 
-* **Framework:** Laravel (versi dapat dilihat di `composer.json`)
-* **Database:** Menggunakan skema yang didefinisikan dalam migrasi `2025_09_29_013905_create_mahasiswas_table.php`.
-* **Frontend:** Blade templates (dapat dilihat di direktori `resources/views/mahasiswa/`).
-* **Paket Tambahan:** `barryvdh/laravel-dompdf` untuk generasi PDF (didefinisikan dalam `composer.json`).
+### 🎨 Interface & UX
+* **📱 Responsive Design:** Interface yang responsif menggunakan Bootstrap 5
+* **🎯 User-Friendly:** Antarmuka yang intuitif dan mudah digunakan
+* **⚡ Fast Loading:** Optimized dengan pagination dan caching
 
-## 🚀 Instalasi & Penyiapan Lokal
+## ⚙️ Tech Stack
 
-Berikut adalah langkah-langkah untuk menjalankan proyek ini di lingkungan lokal Anda:
+### 🚀 Backend
+* **Framework:** Laravel 12.31.1
+* **PHP:** 8.4.12
+* **Database:** MySQL/MariaDB
+* **Authentication:** Laravel Breeze
 
-1.  **Clone Repository**
-    ```bash
-    git clone [URL_REPOSITORY_ANDA]
-    cd crud-laravel
-    ```
+### 🎨 Frontend
+* **Template Engine:** Blade Templates
+* **CSS Framework:** Bootstrap 5.3.2
+* **Icons:** Bootstrap Icons & Emoji
+* **Build Tool:** Vite
 
-2.  **Install Dependensi**
-    Pastikan Anda memiliki Composer terinstal.
-    ```bash
-    composer install
-    ```
+### 📦 Dependencies
+* **PDF Generation:** `barryvdh/laravel-dompdf`
+* **Excel Export:** Custom CSV implementation
+* **Faker:** Indonesian locale data generation
+* **Authentication UI:** Laravel Breeze
 
-3.  **Konfigurasi Lingkungan**
-    Salin file `.env.example` menjadi `.env`.
-    ```bash
-    cp .env.example .env
-    ```
+### 🗄️ Database Structure
+* **Users Table:** Sistem autentikasi pengguna
+* **Mahasiswas Table:** Data mahasiswa (id, nama, nim, email, prodi)
+* **Sessions Table:** Manajemen session pengguna
+* **Jobs & Cache Tables:** Background processing dan caching
 
-4.  **Buat Kunci Aplikasi**
-    ```bash
-    php artisan key:generate
-    ```
+## 🚀 Installation & Setup
 
-5.  **Konfigurasi Database**
-    Buka file `.env` dan atur koneksi database Anda (Nama database, username, password).
-    ```dotenv
-    DB_CONNECTION=mysql
-    DB_HOST=127.0.0.1
-    DB_PORT=3306
-    DB_DATABASE=nama_database_anda
-    DB_USERNAME=username_anda
-    DB_PASSWORD=password_anda
-    ```
+### 📋 Requirements
+- PHP >= 8.2
+- Composer
+- Node.js & npm
+- MySQL/MariaDB
 
-6.  **Jalankan Migrasi Database**
-    Perintah ini akan membuat tabel `mahasiswas` dan tabel bawaan Laravel lainnya.
-    ```bash
-    php artisan migrate
-    ```
+### ⚡ Quick Start
 
-7.  **(Opsional) Jalankan Seeder**
-    Untuk mengisi database dengan data *dummy*.
-    ```bash
-    php artisan db:seed --class=MahasiswaSeeder
-    ```
+1. **📥 Clone Repository**
+   ```bash
+   git clone https://github.com/belpythons/crud-laravel.git
+   cd crud-laravel
+   ```
 
-8.  **Jalankan Aplikasi**
-    ```bash
-    php artisan serve
-    ```
-    Aplikasi sekarang akan berjalan di `http://127.0.0.1:8000`. Buka `http://127.0.0.1:8000/mahasiswa` di browser Anda.
+2. **📦 Install Dependencies**
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. **⚙️ Environment Setup**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. **🗄️ Database Configuration**
+   Update your `.env` file:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=crud_laravel
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   ```
+
+5. **🏗️ Database Migration & Seeding**
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
+   This will create all tables and populate with 25 sample mahasiswa records.
+
+6. **🎨 Build Assets**
+   ```bash
+   npm run build
+   # or for development
+   npm run dev
+   ```
+
+7. **🚀 Start Development Server**
+   ```bash
+   php artisan serve
+   ```
+   Visit: `http://127.0.0.1:8000`
+
+### 🔑 Default Access
+- Create a new account via registration
+- Or login with seeded user credentials (if any)
+- Navigate to `/mahasiswa` for CRUD operations
+
+## 📱 Usage
+
+### 🎯 Main Features Access
+- **Homepage:** `http://127.0.0.1:8000`
+- **Login/Register:** Click login button on homepage
+- **Mahasiswa CRUD:** `http://127.0.0.1:8000/mahasiswa` (requires login)
+- **Export PDF:** Available from mahasiswa index page
+- **Export CSV:** Available from mahasiswa index page
+
+### 🔍 Search & Filter
+- Use the search box to filter by: nama, NIM, email, or program studi
+- Results are paginated (5 records per page)
+- Search query is preserved across pagination
+
+## 📂 Project Structure
+
+```
+crud-laravel/
+├── 📁 app/
+│   ├── 📁 Http/Controllers/
+│   │   └── 🎛️ MahasiswaController.php    # CRUD operations
+│   ├── 📁 Models/
+│   │   ├── 👤 User.php                   # User model
+│   │   └── 🎓 Mahasiswa.php              # Mahasiswa model
+│   └── 📁 Exports/
+│       └── 📊 MahasiswaExport.php        # CSV export logic
+├── 📁 database/
+│   ├── 📁 migrations/                    # Database schema
+│   └── 📁 seeders/
+│       └── 🌱 MahasiswaSeeder.php        # Sample data
+├── 📁 resources/views/
+│   ├── 📁 mahasiswa/                     # CRUD views
+│   │   ├── 📄 index.blade.php            # List view
+│   │   ├── ➕ create.blade.php           # Create form
+│   │   ├── ✏️ edit.blade.php             # Edit form
+│   │   └── 👁️ show.blade.php             # Detail view
+│   └── 📁 auth/                          # Authentication views
+└── 📁 routes/
+    └── 🛣️ web.php                        # Application routes
+```
+
+## 🎯 Features Overview
+
+### 🎓 Mahasiswa Management
+| Feature | Description | Route |
+|---------|-------------|-------|
+| 📋 List | View all mahasiswa with search & pagination | `GET /mahasiswa` |
+| ➕ Create | Add new mahasiswa | `GET /mahasiswa/create` |
+| 💾 Store | Save new mahasiswa | `POST /mahasiswa` |
+| 👁️ Show | View mahasiswa details | `GET /mahasiswa/{id}` |
+| ✏️ Edit | Edit mahasiswa form | `GET /mahasiswa/{id}/edit` |
+| 🔄 Update | Update mahasiswa data | `PUT /mahasiswa/{id}` |
+| 🗑️ Delete | Remove mahasiswa | `DELETE /mahasiswa/{id}` |
+| 📄 Export PDF | Download PDF report | `GET /mahasiswa-pdf` |
+| 📊 Export CSV | Download CSV file | `GET /mahasiswa-excel` |
+
+### 🔐 Authentication Routes
+| Feature | Route | Description |
+|---------|-------|-------------|
+| 🏠 Home | `GET /` | Welcome page with login/register |
+| 🔑 Login | `GET /login` | Login form |
+| 📝 Register | `GET /register` | Registration form |
+| 🏠 Dashboard | `GET /dashboard` | User dashboard |
+| 👤 Profile | `GET /profile` | User profile management |
+
+## 🛠️ Development
+
+### 🔧 Artisan Commands
+```bash
+# Database
+php artisan migrate:fresh --seed    # Reset & seed database
+php artisan migrate                  # Run migrations
+php artisan db:seed                  # Run seeders
+
+# Cache Management
+php artisan cache:clear              # Clear application cache
+php artisan config:clear             # Clear config cache
+php artisan view:clear               # Clear compiled views
+
+# Development
+php artisan serve                    # Start development server
+php artisan tinker                   # Interactive shell
+```
+
+### 🎨 Asset Building
+```bash
+npm run dev          # Development build with watch
+npm run build        # Production build
+npm run watch        # Watch for changes
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## 👨‍💻 Author
+
+**belpythons**
+- GitHub: [@belpythons](https://github.com/belpythons)
+- Repository: [crud-laravel](https://github.com/belpythons/crud-laravel)
+
+---
+
+⭐ **Star this repository if you find it helpful!**

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Mahasiswa;
+use Illuminate\Support\Facades\DB;
 
 class MahasiswaSeeder extends Seeder
 {
@@ -17,6 +17,15 @@ class MahasiswaSeeder extends Seeder
         $count = 25; // number of dummy records to create
         $usedNim = [];
 
+        // Array of program studi options
+        $prodiOptions = [
+            'Teknik Informatika',
+            'Sistem Informasi',
+            'Teknik Komputer',
+            'Data Science',
+            'Cyber Security'
+        ];
+
         for ($i = 0; $i < $count; $i++) {
             // generate a unique NIM (e.g., 22 + 4 digits)
             do {
@@ -26,11 +35,16 @@ class MahasiswaSeeder extends Seeder
 
             $nama = $faker->name();
             $email = $faker->unique()->safeEmail();
+            $prodi = $faker->randomElement($prodiOptions);
 
-            Mahasiswa::create([
+            // Use DB facade as fallback if model class loading fails
+            DB::table('mahasiswas')->insert([
                 'nama' => $nama,
                 'nim'  => $nim,
                 'email'=> $email,
+                'prodi'=> $prodi,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }

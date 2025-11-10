@@ -52,6 +52,7 @@
                 <th>Nama</th>
                 <th>NIM</th>
                 <th>Email</th>
+                <th>Program Studi</th>
             </tr>
         </thead>
         <tbody>
@@ -61,6 +62,7 @@
                 <td>{{ $m->nama }}</td>
                 <td>{{ $m->nim }}</td>
                 <td>{{ $m->email }}</td>
+                <td>{{ $m->prodi }}</td>
             </tr>
             @endforeach
         </tbody>

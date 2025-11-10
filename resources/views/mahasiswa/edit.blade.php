@@ -53,6 +53,20 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="mb-3">
+                        <label for="prodi" class="form-label">Program Studi</label>
+                        <select name="prodi" id="prodi" class="form-control @error('prodi') is-invalid @enderror" required>
+                            <option value="">-- Pilih Prodi --</option>
+                            @foreach ($prodiList as $p)
+                                <option value="{{ $p }}" {{ (old('prodi', $mahasiswa->prodi) == $p) ? 'selected' : '' }}>
+                                    {{ $p }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('prodi')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
